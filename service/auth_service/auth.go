@@ -7,6 +7,6 @@ type Auth struct {
 	Password string `json:"password"`
 }
 
-func (a *Auth) Check() (bool, error) {
+func (a *Auth) Check() (bool, int64,  error) {
 	return models.CheckAuth(a.Username, a.Password)
 }

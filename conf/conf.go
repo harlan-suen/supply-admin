@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 )
+
 type Server struct {
 	HttpPort     int
 	ReadTimeout  time.Duration
@@ -14,14 +15,29 @@ type Server struct {
 var ServerSetting = &Server{}
 
 type Database struct {
-	Type        string
-	User        string
-	Password    string
-	Host        string
-	Name        string
+	Type     string
+	User     string
+	Password string
+	Host     string
+	Name     string
 }
 
 var DatabaseSetting = &Database{}
+
+type JWT struct {
+	AccessKey string
+}
+
+var JWTSetting = &JWT{}
+
+type OSS struct {
+	AccessKey string
+	SecretKey string
+	Bucket    string
+}
+
+var OssSetting = &OSS{}
+
 var cfg *ini.File
 
 func Setup() {
@@ -32,6 +48,8 @@ func Setup() {
 	}
 	mapTo("server", ServerSetting)
 	mapTo("database", DatabaseSetting)
+	mapTo("jwt", JWTSetting)
+	mapTo("oss", OssSetting)
 	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
 	ServerSetting.WriteTimeout = ServerSetting.WriteTimeout * time.Second
 }

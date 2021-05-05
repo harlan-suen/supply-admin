@@ -34,12 +34,14 @@ func Register(c *gin.Context) {
 	}
 	role, _ := strconv.Atoi(register.Role)
 	orgId, _ := strconv.Atoi(register.OrgID)
+	marketID, _ := user_service.MarketMap[int64(orgId)]
 	userService := user_service.User{
 		Username: register.Username,
 		Password: register.Password,
 		Phone:    register.Phone,
 		Role:     role,
 		OrgID:    int64(orgId),
+		MarketID: marketID,
 	}
 	id, err := userService.Add()
 	if err != nil || id == 0 {

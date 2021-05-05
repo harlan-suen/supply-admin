@@ -7,6 +7,7 @@ import (
 	"supply-admin/service"
 	"supply-admin/service/auth_service"
 	errMsg "supply-admin/service/error"
+	"supply-admin/util"
 )
 
 type auth struct {
@@ -28,9 +29,9 @@ func GetAuth(c *gin.Context) {
 		Username: auth.Username,
 		Password: auth.Password,
 	}
-	isExist, err := authService.Check()
+	isExist, userID, err := authService.Check()
 	if err != nil {
-		appG.Response(http.StatusInternalServerError, errMsg.ERROR_AUTH_CHECK_TOKEN_FAIL, nil)
+		appG.Response(http.StatusInternalServerError, errMsg.ERROR_AUTH, nil)
 		return
 	}
 
@@ -38,8 +39,12 @@ func GetAuth(c *gin.Context) {
 		appG.Response(http.StatusUnauthorized, errMsg.ERROR_AUTH, nil)
 		return
 	}
-
+	token, err := util.CreateToken(userID)
+	if err != nil {
+		appG.Response(http.StatusUnauthorized, errMsg.ERROR_AUTH_TOKEN, nil)
+		return
+	}
 	appG.Response(http.StatusOK, errMsg.SUCCESS, map[string]string {
-		"token": "yeah, sir",
+		"token": token,
 	})
 }

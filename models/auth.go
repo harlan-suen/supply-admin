@@ -3,21 +3,21 @@ package models
 import "gorm.io/gorm"
 
 type Auth struct {
-	ID int `gorm:"primary_key", json:"id"`
+	ID int64 `gorm:"primary_key", json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-func CheckAuth(username, password string) (bool, error){
+func CheckAuth(username, password string) (bool, int64, error){
 	var auth Auth
-	err := db.Table("user").Select("id").Where(Auth{Username: username, Password: password}).First(&auth).Error
+	err := db.Table("user").Select("id", "role").Where(Auth{Username: username, Password: password}).First(&auth).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return false, err
+		return false, 0, err
 	}
 
 	if auth.ID > 0 {
-		return true, nil
+		return true, auth.ID, nil
 	}
 
-	return false, nil
+	return false, 0, nil
 }
