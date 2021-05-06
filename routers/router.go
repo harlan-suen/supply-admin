@@ -3,6 +3,7 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	"supply-admin/routers/api"
+	"supply-admin/routers/middleware"
 )
 
 func InitRouter() *gin.Engine {
@@ -13,7 +14,7 @@ func InitRouter() *gin.Engine {
 	r.POST("api/auth/login", api.GetAuth)
 	r.POST("api/auth/register", api.Register)
 	r.GET("api/loading", api.Loading)
-	guardApi := r.Group("api/guard")
+	guardApi := r.Group("api/guard").Use(middleware.AuthChecker())
 	{
 		guardApi.GET("user", api.GetUsers)
 		guardApi.GET("user/:user_id", api.GetUserByID)
