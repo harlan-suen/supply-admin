@@ -38,6 +38,13 @@ type OSS struct {
 
 var OssSetting = &OSS{}
 
+type Redis struct {
+	Host        string
+	Password    string
+}
+
+var RedisSetting = &Redis{}
+
 var cfg *ini.File
 
 func Setup() {
@@ -50,6 +57,7 @@ func Setup() {
 	mapTo("database", DatabaseSetting)
 	mapTo("jwt", JWTSetting)
 	mapTo("oss", OssSetting)
+	mapTo("redis", RedisSetting)
 	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
 	ServerSetting.WriteTimeout = ServerSetting.WriteTimeout * time.Second
 }

@@ -6,12 +6,14 @@ import (
 	"net/http"
 	"supply-admin/conf"
 	"supply-admin/models"
+	"supply-admin/redis"
 	"supply-admin/routers"
 )
 
 func init() {
 	conf.Setup()
 	models.Setup()
+	redis.Setup()
 }
 
 func main() {

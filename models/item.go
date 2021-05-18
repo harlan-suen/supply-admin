@@ -52,6 +52,16 @@ func GetAllItem() (error, []Item) {
 	}
 	return nil, res
 }
+
+func GetItemOnSale(marketID int64) (error, []Item) {
+	var res []Item
+	err := db.Table("item").Where("market_id = ? AND on_sale = 1", marketID).Find(&res).Error
+	if err != nil {
+		return err, nil
+	}
+	return nil, res
+}
+
 func ToggleItem(id int64, onSale bool) error {
 	return db.Table("item").Where("id = ?", id).Update("on_sale", onSale).Error
 }

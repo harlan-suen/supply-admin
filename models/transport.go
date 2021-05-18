@@ -16,14 +16,19 @@ type Transport struct {
 }
 
 func AddTransport(sourceID, targetID int64, item string, quantity int) (id int64, err error) {
+	status := 10
+	if sourceID == 9999 {
+		status = 20
+	}
 	var transport = Transport{
 		SourceID: sourceID,
 		TargetID: targetID,
 		Item:     item,
 		Quantity: quantity,
+		Status: status,
 	}
 	tx := db.Begin()
-	tx.Table("transport").Select("SourceID", "TargetID", "Item", "Quantity").Create(&transport)
+	tx.Table("transport").Select("SourceID", "TargetID", "Item", "Quantity", "Status").Create(&transport)
 	if sourceID != 9999 {
 		tx.Table("item").Where("name = ? AND market_id = ?", transport.Item, transport.SourceID).Update("stock", gorm.Expr("stock - ?", transport.Quantity))
 	}

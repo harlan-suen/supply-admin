@@ -45,6 +45,10 @@ func UpdateUser(id int64, username, password, phone, imgUrl string) error {
 	}).Error
 }
 
+func DeleteUser(id int64) error {
+	return db.Table("user").Delete(&User{}, id).Error
+}
+
 func GetUserByID(id int64) (error, *User) {
 	var user User
 	err := db.Table("user").Where("id = ?", id).First(&user).Error

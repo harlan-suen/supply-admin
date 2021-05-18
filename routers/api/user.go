@@ -68,3 +68,23 @@ func UpdateUser(c *gin.Context) {
 
 	appG.Response(http.StatusOK, errMsg.SUCCESS, nil)
 }
+
+func DeleteUser(c *gin.Context) {
+	appG := service.Gin{Ctx: c}
+	id, ok := c.Params.Get("user_id")
+	userID, err := strconv.Atoi(id)
+	if err != nil && !ok {
+		appG.Response(http.StatusBadRequest, errMsg.INVALID_PARAMS, nil)
+		return
+	}
+	userService := user_service.User{
+		ID:       int64(userID),
+	}
+	err = userService.Delete()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, errMsg.ERROR, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, errMsg.SUCCESS, nil)
+}

@@ -114,6 +114,22 @@ func GetItem(c *gin.Context) {
 	appG.Response(http.StatusOK, errMsg.SUCCESS, items)
 }
 
+func GetItemOnSale(c *gin.Context) {
+	appG := service.Gin{Ctx: c}
+	marketID, ok := c.Params.Get("market_id")
+	id, err := strconv.Atoi(marketID)
+	if !ok || err != nil {
+		appG.Response(http.StatusBadRequest, errMsg.INVALID_PARAMS, nil)
+		return
+	}
+	err, items := item_service.GetOnSale(int64(id))
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, errMsg.ERROR_GET_ITEM_FAIL, nil)
+		return
+	}
+	appG.Response(http.StatusOK, errMsg.SUCCESS, items)
+}
+
 func GetAllItem(c *gin.Context) {
 	appG := service.Gin{Ctx: c}
 	err, items := item_service.GetAll()

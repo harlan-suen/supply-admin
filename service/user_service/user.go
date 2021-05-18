@@ -28,6 +28,10 @@ func (u *User) Update() error {
 	return models.UpdateUser(u.ID, u.Username, u.Password, u.Phone, u.ImgUrl)
 }
 
+func (u *User) Delete() error {
+	return models.DeleteUser(u.ID)
+}
+
 func GetUsers() (error, []models.User) {
 	return models.GetUsers()
 }

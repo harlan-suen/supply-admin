@@ -13,10 +13,12 @@ type Order struct {
 }
 
 var StatusMap = map[int]string{
+	-1: "已取消",
 	10: "待支付",
 	20: "待发货",
 	30: "配送中",
-	40: "已完成",
+	40: "待取货",
+	50: "已完成",
 }
 
 func (o *Order) Add() (int64, error) {

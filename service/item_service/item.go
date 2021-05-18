@@ -29,6 +29,10 @@ func GetByID(marketID int64) (error, []models.Item) {
 	return models.GetItemByID(marketID)
 }
 
+func GetOnSale(marketID int64) (error, []models.Item) {
+	return models.GetItemOnSale(marketID)
+}
+
 func GetAll() (error, []models.Item) {
 	return models.GetAllItem()
 }
